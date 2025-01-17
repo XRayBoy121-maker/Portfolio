@@ -3,9 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Soham Santra - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
 <body>
-    
+    <nav>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <span class="subtitle">Hi, my name is</span>
+        <h1>Soham Santra.<br>I build things for the web.</h1>
+        <p>I'm a software engineer specializing in building exceptional digital experiences. Currently, I'm focused on building accessible, human-centered products.</p>
+        <a href="#contact" class="cta-button">Get In Touch</a>
+    </section>
+
+    <section class="about" id="about">
+        <div>
+            <h2>About Me</h2>
+            <p>Hi, I’m Soham Santra, an Electronics Engineer and tech enthusiast passionate about blending hardware and software. Whether it’s designing circuits, coding smart systems, or exploring robotics, I love turning ideas into innovative projects. Always learning, always building—let’s create something awesome!.</p>
+        </div>
+        <div class="about-image">
+            <img src="coder.jpeg" alt="Soham Santra profile picture">
+        </div>
+    </section>
+
+    <section class="projects" id="projects">
+        <h2>Some Things I've Built</h2>
+        <div class="project-card">
+            <div class="project-image"></div>
+            <div>
+                <h3>Featured Project</h3>
+                <p>A minimal, dark blue theme for VS Code, Sublime Text, Atom, iTerm, and more.</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <div class="project-image"></div>
+            <div>
+                <h3>Featured Project</h3>
+                <p>A minimal, dark blue theme for VS Code, Sublime Text, Atom, iTerm, and more.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="skills" id="skills">
+        <h2>Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-item">C</div>
+            <div class="skill-item">Python</div>
+            <div class="skill-item">HTML</div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2>Want to work with me</h2>
+        <form id="contactForm">
+            <div id="formMessage" class="form-message"></div>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <textarea name="message" rows="5" placeholder="Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>
+Last edited 4 minutes ago

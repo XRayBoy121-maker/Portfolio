@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #0a192f;
+    color: #e6f1ff;
+}
+
+nav {
+    position: fixed;
+    width: 100%;
+    padding: 1.5rem;
+    background-color: rgba(10, 25, 47, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-links a {
+    color: #64ffda;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #e6f1ff;
+}
+
+section {
+    min-height: 100vh;
+    padding: 8rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    opacity: 0;
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.subtitle {
+    color: #64ffda;
+    font-size: 1.2rem;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    line-height: 1.1;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    color: #8892b0;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: transparent;
+    border: 2px solid #64ffda;
+    color: #64ffda;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+}
+
+.cta-button:hover {
+    background: rgba(100, 255, 218, 0.1);
+    transform: translateY(-3px);
+}
+
+.about {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.about-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.projects {
+    display: grid;
+    gap: 4rem;
+}
+
+.project-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    background: #112240;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.project-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #1d4ed8;
+    border-radius: 4px;
+}
+
+.skills {
+    text-align: center;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.skill-item {
+    padding: 1rem;
+    background: #112240;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+.skill-item:hover {
+    transform: translateY(-5px);
+}
+
+.contact {
+    text-align: center;
+}
+
+form {
+    max-width: 600px;
+    margin: 4rem auto;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.form-message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    display: none;
+}
+
+.form-message.success {
+    display: block;
+    background-color: rgba(100, 255, 218, 0.1);
+    color: #64ffda;
+    border: 1px solid #64ffda;
+}
+
+.form-message.error {
+    display: block;
+    background-color: rgba(255, 100, 100, 0.1);
+    color: #ff6464;
+    border: 1px solid #ff6464;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 1rem;
+    background: #112240;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #e6f1ff;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #64ffda;
+}
+
+button {
+    padding: 1rem 2rem;
+    background: #64ffda;
+    border: none;
+    border-radius: 4px;
+    color: #0a192f;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(100, 255, 218, 0.3);
+}
+
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 6rem 1.5rem;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    .about {
+        grid-template-columns: 1fr;
+    }
+
+    .project-card {
+        grid-template-columns: 1fr;
+    }
+}
