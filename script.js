@@ -106,3 +106,5 @@ contactForm.addEventListener('submit', async (e) => {
     button.textContent = originalText;
     button.disabled = false;
 });
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
