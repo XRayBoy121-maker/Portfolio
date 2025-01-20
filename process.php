@@ -1,89 +1,98 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
 
-require 'vendor/autoload.php';  // Adjust path according to your PHPMailer installation
+require 'vendor/autoload.php';
 
-header('Content-Type: application/json');
-
-try {
-    // Validate inputs
-    if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['message'])) {
-        throw new Exception('All fields are required');
-    }
-
-    $name = $_POST['name'];
-    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-    $message = $_POST['message'];
-
-    if (!$email) {
-        throw new Exception('Invalid email format');
-    }
-
-    // Create a new PHPMailer instance
-    $mail = new PHPMailer(true);
-
-    // Server settings
-    $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com';  // Gmail SMTP server
-    $mail->SMTPAuth   = true;
-    $mail->Username   = 'your-gmail@gmail.com';  // Your Gmail address
-    $mail->Password   = 'your-app-specific-password';  // Your Gmail app-specific password
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = 587;
-
-    // Recipients
-    $mail->setFrom($email, $name);
-    $mail->addAddress('santrasoham85@gmail.com', 'Soham Santra');
-    $mail->addReplyTo($email, $name);
-
-    // Content
-    $mail->isHTML(true);
-    $mail->Subject = 'New Contact Form Submission from Portfolio';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Sanitize and validate input
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
     
-    // HTML email body
-    $mail->Body = "
-        <html>
-        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+    // Validate email
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid email format']);
+        exit;
+    }
+    
+    // Validate required fields
+    if (empty($name) || empty($email) || empty($message)) {
+        echo json_encode(['status' => 'error', 'message' => 'All fields are required']);
+        exit;
+    }
+    
+    try {
+        $mail = new PHPMailer(true);
+        
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'codedsymphony6@gmail.com'; // Your Gmail address
+        $mail->Password = 'rjet hyke oawq sueo'; // Use App Password from Google Account
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+        
+        // Recipients
+        $mail->setFrom($email, $name);
+        $mail->addAddress('codedsymphony6@gmail.com');
+        $mail->addReplyTo($email, $name);
+        
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'New Contact Form Submission';
+        $mail->Body = "
             <h2>New Contact Form Submission</h2>
-            <table style='border-collapse: collapse; width: 100%; max-width: 600px;'>
-                <tr>
-                    <th style='text-align: left; padding: 8px; background-color: #f2f2f2;'>Name:</th>
-                    <td style='padding: 8px;'>" . htmlspecialchars($name) . "</td>
-                </tr>
-                <tr>
-                    <th style='text-align: left; padding: 8px; background-color: #f2f2f2;'>Email:</th>
-                    <td style='padding: 8px;'>" . htmlspecialchars($email) . "</td>
-                </tr>
-                <tr>
-                    <th style='text-align: left; padding: 8px; background-color: #f2f2f2;'>Message:</th>
-                    <td style='padding: 8px;'>" . nl2br(htmlspecialchars($message)) . "</td>
-                </tr>
-            </table>
-        </body>
-        </html>";
-
-    // Plain text version for non-HTML mail clients
-    $mail->AltBody = "
-        New Contact Form Submission
-        -------------------------
-        Name: $name
-        Email: $email
-        Message: $message";
-
-    // Send email
-    $mail->send();
-
-    echo json_encode([
-        'success' => true,
-        'message' => 'Message sent successfully!'
-    ]);
-
-} catch (Exception $e) {
-    echo json_encode([
-        'success' => false,
-        'message' => "Error: {$e->getMessage()}"
-    ]);
+            <p><strong>Name:</strong> {$name}</p>
+            <p><strong>Email:</strong> {$email}</p>
+            <p><strong>Message:</strong></p>
+            <p>{$message}</p>
+        ";
+        $mail->AltBody = "New Contact Form Submission\n\nName: {$name}\nEmail: {$email}\nMessage: {$message}";
+        
+        $mail->send();
+        echo json_encode(['status' => 'success', 'message' => 'Message has been sent']);
+    } catch (Exception $e) {
+        echo json_encode(['status' => 'error', 'message' => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"]);
+    }
 }
 ?>
+
+// HTML form
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Form</title>
+</head>
+<body>
+    <form id="contactForm" method="POST">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <textarea name="message" placeholder="Message" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+
+    <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        fetch('contact.php', {
+            method: 'POST',
+            body: new FormData(this)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            if(data.status === 'success') {
+                this.reset();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while sending the message.');
+        });
+    });
+    </script>
+</body>
+</html>w
