@@ -1,40 +1,89 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+require 'vendor/autoload.php';  // Adjust path according to your PHPMailer installation
+
 header('Content-Type: application/json');
 
-// Validate form data
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+try {
+    // Validate inputs
     if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['message'])) {
-        echo json_encode(['success' => false, 'message' => 'All fields are required']);
-        exit;
+        throw new Exception('All fields are required');
     }
 
-    // Sanitize inputs
-    $name = htmlspecialchars(trim($_POST['name']));
-    $email = htmlspecialchars(trim($_POST['email']));
-    $message = htmlspecialchars(trim($_POST['message']));
+    $name = $_POST['name'];
+    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+    $message = $_POST['message'];
 
-    // Validate email
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(['success' => false, 'message' => 'Invalid email format']);
-        exit;
+    if (!$email) {
+        throw new Exception('Invalid email format');
     }
 
-    // Email configuration
-    $to = "santrasoham85@gmail.com"; // Replace with your email
-    $subject = "New Contact Form Submission";
+    // Create a new PHPMailer instance
+    $mail = new PHPMailer(true);
 
-    // Prepare email content
-    $email_content = "Name: $name\n";
-    $email_content .= "Email: $email\n\n";
-    $email_content .= "Message:\n$message";
+    // Server settings
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.gmail.com';  // Gmail SMTP server
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'your-gmail@gmail.com';  // Your Gmail address
+    $mail->Password   = 'your-app-specific-password';  // Your Gmail app-specific password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port       = 587;
+
+    // Recipients
+    $mail->setFrom($email, $name);
+    $mail->addAddress('santrasoham85@gmail.com', 'Soham Santra');
+    $mail->addReplyTo($email, $name);
+
+    // Content
+    $mail->isHTML(true);
+    $mail->Subject = 'New Contact Form Submission from Portfolio';
+    
+    // HTML email body
+    $mail->Body = "
+        <html>
+        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+            <h2>New Contact Form Submission</h2>
+            <table style='border-collapse: collapse; width: 100%; max-width: 600px;'>
+                <tr>
+                    <th style='text-align: left; padding: 8px; background-color: #f2f2f2;'>Name:</th>
+                    <td style='padding: 8px;'>" . htmlspecialchars($name) . "</td>
+                </tr>
+                <tr>
+                    <th style='text-align: left; padding: 8px; background-color: #f2f2f2;'>Email:</th>
+                    <td style='padding: 8px;'>" . htmlspecialchars($email) . "</td>
+                </tr>
+                <tr>
+                    <th style='text-align: left; padding: 8px; background-color: #f2f2f2;'>Message:</th>
+                    <td style='padding: 8px;'>" . nl2br(htmlspecialchars($message)) . "</td>
+                </tr>
+            </table>
+        </body>
+        </html>";
+
+    // Plain text version for non-HTML mail clients
+    $mail->AltBody = "
+        New Contact Form Submission
+        -------------------------
+        Name: $name
+        Email: $email
+        Message: $message";
 
     // Send email
-    if (mail($to, $subject, $email_content)) {
-        echo json_encode(['success' => true, 'message' => 'Message sent successfully']);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to send message']);
-    }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+    $mail->send();
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Message sent successfully!'
+    ]);
+
+} catch (Exception $e) {
+    echo json_encode([
+        'success' => false,
+        'message' => "Error: {$e->getMessage()}"
+    ]);
 }
 ?>
