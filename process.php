@@ -3,6 +3,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
+if (class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+    echo "PHPMailer is installed correctly";
+} else {
+    echo "PHPMailer is not installed";
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate input
