@@ -1,47 +1,56 @@
 <?php
-
-//Import PHPMailer classes into the global namespace
-//These must be at the top of your script, not inside a function
+// Include the PHPMailer library
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//required files
-require 'phpmailer/src/Exception.php';
-require 'phpmailer/src/PHPMailer.php';
-require 'phpmailer/src/SMTP.php';
+require 'vendor/autoload.php';
 
-//Create an instance; passing `true` enables exceptions
-if (isset($_POST["send"])) {
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the form data
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $message = $_POST['message'];
 
-  $mail = new PHPMailer(true);
+    // Create a new PHPMailer instance
+    $mail = new PHPMailer(true);
 
-    //Server settings
-    $mail->isSMTP();                              //Send using SMTP
-    $mail->Host       = 'smtp.gmail.com';       //Set the SMTP server to send through
-    $mail->SMTPAuth   = true;             //Enable SMTP authentication
-    $mail->Username   = 'codedsymphony6@gmail.com';   //SMTP write your email
-    $mail->Password   = 'zrnk bbgb vvag nssi';      //SMTP password
-    $mail->SMTPSecure = 'ssl';            //Enable implicit SSL encryption
-    $mail->Port       = 465;                                    
+    try {
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP host
+        $mail->SMTPAuth = true;
+        $mail->Username = 'codedsymphony6@gmail.com'; // Replace with your email address
+        $mail->Password = 'bzcjyhrugnkdgumh'; // Replace with your email password
+        $mail->SMTPSecure = 'tls'; // Enable TLS encryption
+        $mail->Port = 587; // TCP port to connect to
 
-    //Recipients
-    $mail->setFrom( $_POST["email"], $_POST["name"]); // Sender Email and name
-    $mail->addAddress('example@gmail.com');     //Add a recipient email  
-    $mail->addReplyTo($_POST["email"], $_POST["name"]); // reply to sender email
+        // Sender and recipient settings
+        $mail->setFrom('codedsymphony6@gmail.com', 'Soham Santra'); // Replace with your email address and name
+        $mail->addAddress($email, $name); // Replace with the recipient's email address and name
 
-    //Content
-    $mail->isHTML(true);               //Set email format to HTML
-    $mail->Subject = $_POST["subject"];   // email subject headings
-    $mail->Body    = $_POST["message"]; //email message
+        // Email content
+        $mail->isHTML(true);
+        $mail->Subject = 'New message from your website';
+        $mail->Body = "
+            <h2>New message</h2>
+            <p><b>Name:</b> $name</p>
+            <p><b>Email:</b> $email</p>
+            <p><b>Message:</b> $message</p>
+        ";
 
-    // Success sent message alert
-    $mail->send();
-    echo
-    " 
-    <script> 
-     alert('Message was sent successfully!');
-     document.location.href = 'index.php';
-    </script>
-    ";
+        // Send the email
+        $mail->send();
+        echo 'Message has been sent successfully!';
+    } catch (Exception $e) {
+        echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+    }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title
