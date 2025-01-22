@@ -18,16 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Server settings
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP host
+        $mail->Host = 'smtp.gmail.com'; 
         $mail->SMTPAuth = true;
-        $mail->Username = 'codedsymphony6@gmail.com'; // Replace with your email address
-        $mail->Password = 'bzcjyhrugnkdgumh'; // Replace with your email password
-        $mail->SMTPSecure = 'tls'; // Enable TLS encryption
-        $mail->Port = 587; // TCP port to connect to
+        $mail->Username = 'codedsymphony6@gmail.com'; 
+        $mail->Password = 'bzcjyhrugnkdgumh'; 
+        $mail->SMTPSecure = 'tls'; 
+        $mail->Port = 587; 
 
         // Sender and recipient settings
-        $mail->setFrom('codedsymphony6@gmail.com', 'Soham Santra'); // Replace with your email address and name
-        $mail->addAddress($email, $name); // Replace with the recipient's email address and name
+        $mail->setFrom('codedsymphony6@gmail.com', 'Soham Santra');
+        $mail->addAddress($email, $name);
 
         // Email content
         $mail->isHTML(true);
@@ -41,9 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Send the email
         $mail->send();
-        echo 'Message has been sent successfully!';
+        $successMessage = 'Message has been sent successfully!';
     } catch (Exception $e) {
-        echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+        $errorMessage = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
     }
 }
 ?>
@@ -53,4 +53,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title
+    <title>Contact Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .success {
+            color: green;
+            margin-bottom: 15px;
+        }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+        input, textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Contact Form</h2>
+    
+    <?php
+    if (isset($successMessage)) {
+        echo "<div class='success'>" . htmlspecialchars($successMessage) . "</div>";
+    }
+    if (isset($errorMessage)) {
+        echo "<div class='error'>" . htmlspecialchars($errorMessage) . "</div>";
+    }
+    ?>
+    
+    <form method="POST" action="">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+        <input type="submit" value="Send Message">
+    </form>
+</body>
+</html>
