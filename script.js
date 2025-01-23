@@ -108,3 +108,8 @@ contactForm.addEventListener('submit', async (e) => {
 });
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+
+function openInNewTab(url) {
+  window.open(url, '_blank').focus(); // Opens in new tab and focuses
+}
