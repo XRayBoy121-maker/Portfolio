@@ -61,6 +61,9 @@ ScrollTrigger.create({
         });
     }
 });
+function openInNewTab(url) {
+    window.open(url, '_blank').focus();
+}
 
 // Form handling
 const contactForm = document.getElementById('contactForm');
