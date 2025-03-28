@@ -68,13 +68,21 @@
 
     <section class="contact" id="contact">
         <h2>Get In Touch</h2>
-        <form id="contactForm">
-            <div id="formMessage" class="form-message"></div>
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <textarea name="message" rows="5" placeholder="Message" required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
+        <form
+  action="https://formspree.io/f/mjkyegzb"
+  method="POST"
+>
+  <label>
+    Your email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Your message:
+    <textarea name="message"></textarea>
+  </label>
+  <!-- your other form fields go here -->
+  <button type="submit">Send</button>
+</form>
     </section>
 
     <script src="script.js"></script>
