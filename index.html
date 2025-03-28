@@ -71,16 +71,20 @@
         <form
   action="https://formspree.io/f/mjkyegzb"
   method="POST"
+  enctype="multipart/form-data"
 >
   <label>
     Your email:
     <input type="email" name="email">
   </label>
   <label>
-    Your message:
+    Your CV
+    <input type="file" name="upload">
+  </label>
+  <label>
+    Your Brief Introduction
     <textarea name="message"></textarea>
   </label>
-  <!-- your other form fields go here -->
   <button type="submit">Send</button>
 </form>
     </section>
